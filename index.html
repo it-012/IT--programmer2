@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Профессиональная разработка сайтов под ключ</title>
+
+<!-- Шрифт -->
+<link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;700&display=swap" rel="stylesheet" />
+
+<style>
+  /* ---------- базовые стили (холодная палитра + снег) ---------- */
+  body{
+    font-family:'Rubik',sans-serif;margin:0;padding:0;
+    background:linear-gradient(to bottom,#e9f2ff,#f7fbff);
+    color:#2c3e50;line-height:1.6;opacity:0;transition:opacity 1.2s ease;
+    overflow-x:hidden; /* чтобы снежинки не появлялись горизонтальный скролл */
+  }
+  body.visible{opacity:1;}
+
+  a{color:#3b5b9b;text-decoration:none;transition:color .3s;}
+  a:hover{color:#2b467a;text-decoration:underline;}
+
+  header{
+    background:linear-gradient(135deg,#3b5b9b,#5688ff);
+    color:#fff;text-align:center;padding:60px 20px 50px;
+    box-shadow:0 4px 16px rgba(59,91,155,.5);
+  }
+  header h1{margin-bottom:12px;font-size:2.8rem;font-weight:700;}
+  header p{font-size:1.4rem;opacity:.95;}
+
+  main{max-width:960px;margin:40px auto 70px;padding:0 20px;}
+
+  section{
+    background:#ffffff;border-radius:16px;padding:32px 28px 38px;margin-bottom:40px;
+    box-shadow:0 6px 20px rgba(0,0,0,.06);
+  }
+  h2{color:#3b5b9b;margin-bottom:24px;font-size:1.9rem;font-weight:700;}
+
+  ul{padding-left:20px;}
+  ul li{margin-bottom:14px;font-weight:500;font-size:1.05rem;}
+  p{font-size:1.06rem;margin-bottom:16px;}
+
+  .btn{
+    display:inline-block;margin-top:20px;padding:14px 36px;
+    background:#3b5b9b;color:#fff;font-weight:700;font-size:1.1rem;
+    border-radius:10px;cursor:pointer;text-align:center;user-select:none;
+    box-shadow:0 6px 16px rgba(59,91,155,.4);
+    transition:background .3s,box-shadow .3s;
+  }
+  .btn:hover{background:#2b467a;box-shadow:0 8px 20px rgba(43,70,122,.5);}
+
+  /* ---------- отзывы ---------- */
+  .review-container{
+    position:relative;min-height:300px;background:#eef5ff;border-radius:14px;
+    box-shadow:0 6px 20px rgba(0,0,0,.08);padding:30px 20px;overflow:hidden;
+  }
+  .review-slide{
+    position:absolute;top:30px;left:50%;transform:translateX(-50%);
+    max-width:700px;opacity:0;transition:opacity 1s ease;text-align:center;
+    padding:0 20px;box-sizing:border-box;
+  }
+  .review-slide.active{opacity:1;position:relative;}
+
+  .avatar{
+    width:90px;height:90px;border-radius:50%;object-fit:cover;margin:0 auto 18px;
+    border:3px solid #3b5b9b;
+  }
+  .review-name{font-weight:700;font-size:1.3rem;color:#3b5b9b;margin-bottom:10px;}
+  .stars{margin-bottom:14px;}
+  .stars span{color:#f1c40f;font-size:1.3rem;margin:0 2px;}
+  .stars .plus{color:#27ae60;font-size:1.5rem;margin-left:6px;}
+  .review-text{font-size:1.05rem;font-style:italic;color:#34495e;margin:0 auto;max-width:650px;}
+
+  .like-button{
+    margin-top:16px;background:none;border:none;cursor:pointer;
+    font:600 1rem 'Rubik',sans-serif;color:#3b5b9b;display:inline-flex;align-items:center;
+    transition:color .3s;
+  }
+  .like-button:hover:not(:disabled){color:#2b467a;}
+  .like-button:disabled{color:#999;cursor:default;}
+  .like-count{margin-left:8px;color:#27ae60;font-weight:700;}
+
+  /* ---------- портфолио ---------- */
+  .portfolio-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:25px;}
+  .portfolio-item{
+    background:#f1f6ff;border-radius:12px;padding:16px;
+    box-shadow:0 4px 14px rgba(59,91,155,.15);transition:box-shadow .3s;
+  }
+  .portfolio-item:hover{box-shadow:0 8px 24px rgba(59,91,155,.3);}
+  .portfolio-title{font-weight:700;margin-bottom:10px;color:#3b5b9b;}
+  .portfolio-desc{font-size:.95rem;color:#455a75;}
+
+  footer{
+    background:#3b5b9b;color:#fff;text-align:center;padding:30px 20px;font-size:14px;
+    box-shadow:0 -2px 8px rgba(59,91,155,.6);
+  }
+  footer a{color:#d5e4ff;font-weight:600;}
+
+  /* ---------- анимация появления (оставлено как есть) ---------- */
+  .reveal{opacity:0;transform:translateY(60px);transition:opacity .75s ease-out,transform .75s ease-out;}
+  .in-view{opacity:1;transform:none;}
+
+  /* ---------- снег ---------- */
+  .snowflake{
+    position:fixed;top:-10px;z-index:9999;user-select:none;pointer-events:none;
+    color:#fff;font-size:1em;animation:fall linear infinite;
+  }
+  @keyframes fall{
+    to{transform:translateY(100vh) rotate(360deg);}
+  }
+
+  /* ---------- адаптив ---------- */
+  @media(max-width:700px){
+    main{max-width:90%;}
+    .review-text{max-width:100%;}
+    .review-slide{padding:0 10px;}
+  }
+  @media(max-width:480px){
+    header h1{font-size:2rem;}
+    section{padding:20px 18px 25px;}
+    .review-text{font-size:1rem;}
+  }
+</style>
+</head>
+
+<body>
+<header class="reveal">
+  <h1>Профессиональная разработка сайтов под ключ</h1>
+  <p>Создаю качественные, современные и адаптивные сайты под ваши задачи</p>
+</header>
+
+<main>
+  <section class="reveal">
+    <h2>О проекте</h2>
+    <p>Этот сайт — пример моего профессионального подхода. Я создаю сайты быстро, эффективно и под ключ. Каждый проект — индивидуальное решение, максимальная отдача и гарантия результата.</p>
+  </section>
+
+  <section class="reveal">
+    <h2>Почему стоит выбрать меня</h2>
+    <ul>
+      <li><strong>Эффективность:</strong> чёткий план работы, соблюдение сроков, никаких задержек</li>
+      <li><strong>Продуктивность:</strong> полноценный красивый сайт даже за короткий срок</li>
+      <li><strong>Гибкость:</strong> учитываю все ваши пожелания, предлагаю лучшие решения</li>
+      <li><strong>Дизайн:</strong> современные и удобные интерфейсы с акцентом на комфорт</li>
+      <li><strong>Поддержка:</strong> помощь и консультации даже после сдачи проекта</li>
+    </ul>
+  </section>
+
+  <section class="reveal">
+    <h2>Портфолио</h2>
+    <div class="portfolio-list">
+      <div class="portfolio-item reveal">
+        <div class="portfolio-title">Сайт-визитка для ресторана</div>
+        <div class="portfolio-desc">Современный адаптивный дизайн и онлайн-меню.</div>
+      </div>
+      <div class="portfolio-item reveal">
+        <div class="portfolio-title">Интернет-магазин электроники</div>
+        <div class="portfolio-desc">Каталог, фильтры и онлайн-оплата.</div>
+      </div>
+      <div class="portfolio-item reveal">
+        <div class="portfolio-title">Корпоративный сайт IT-компании</div>
+        <div class="portfolio-desc">Уникальный дизайн и CMS на базе Headless.</div>
+      </div>
+      <div class="portfolio-item reveal">
+        <div class="portfolio-title">Личный блог</div>
+        <div class="portfolio-desc">SEO-оптимизация и минималистичный стиль.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="reveal">
+    <h2>Отзывы клиентов</h2>
+    <div class="review-container reveal" aria-live="polite" aria-atomic="true"></div>
+  </section>
+
+  <section class="reveal">
+    <h2>Контакты</h2>
+    <p>Готов обсудить ваш проект и начать работу уже сегодня.</p>
+    <a href="https://t.me/IT_Programmer_io" class="btn" target="_blank" rel="noopener noreferrer">Написать в Telegram</a>
+  </section>
+</main>
+
+<footer class="reveal">
+  &copy; 2025 IT_Programmer — Индивидуальная разработка сайтов.<br />
+  Telegram: <a href="https://t.me/IT_Programmer_io" target="_blank" rel="noopener noreferrer">@IT_Programmer_io</a>
+</footer>
+
+<!-- ---------- скрипт: отзывы + анимация + снег ---------- -->
+<script>
+  /* --- отзывы (остались без изменений) --- */
+  const reviews=[
+    {name:"Анна Петрова",avatar:"https://randomuser.me/api/portraits/women/68.jpg",text:"Очень довольна работой! Быстро, чётко и с пониманием моих задач. Рекомендую всем!"},
+    {name:"Сергей Иванов",avatar:"https://randomuser.me/api/portraits/men/45.jpg",text:"Работа выполнена с высоким качеством, все мои пожелания учтены. Очень профессионально!"},
+    {name:"Марина Козлова",avatar:"https://randomuser.me/api/portraits/women/12.jpg",text:"Прекрасный результат, сайт получился очень удобным и красивым. Спасибо за поддержку!"},
+    {name:"Дмитрий Смирнов",avatar:"https://randomuser.me/api/portraits/men/33.jpg",text:"Все было сделано быстро и качественно, приятно работать с профессионалом."},
+    {name:"Ольга Васильева",avatar:"https://randomuser.me/api/portraits/women/25.jpg",text:"Очень рекомендую! Внимательный подход и отличный результат."}
+  ];
+  const container=document.querySelector(".review-container");
+  reviews.forEach((review,i)=>{
+    const div=document.createElement("div");
+    div.classList.add("review-slide");
+    if(i===0)div.classList.add("active");
+    div.innerHTML=`
+      <img src="${review.avatar}" alt="Фото ${review.name}" class="avatar"/>
+      <h3 class="review-name">${review.name}</h3>
+      <div class="stars"><span>⭐</span><span>⭐</span><span>⭐</span><span>⭐</span><span>⭐</span><span class="plus">🔥</span></div>
+      <p class="review-text">"${review.text}"</p>
+      <button class="like-button"><span class="like-count"></span></button>`;
+    const likeBtn=div.querySelector(".like-button"),
+          likeCount=likeBtn.querySelector(".like-count");
+    likeBtn.addEventListener("click",()=>{
+      likeCount.textContent=parseInt(likeCount.textContent)+1;
+      likeBtn.disabled=true;
+    });
+    container.appendChild(div);
+  });
+  let current=0;const slides=container.querySelectorAll(".review-slide");
+  setInterval(()=>{slides[current].classList.remove("active");current=(current+1)%slides.length;slides[current].classList.add("active");},5000);
+
+  /* --- анимация появления блоков (без изменений) --- */
+  const observer=new IntersectionObserver((entries,obs)=>{
+    entries.forEach(entry=>{
+      if(entry.isIntersecting){
+        entry.target.classList.add('in-view');
+        obs.unobserve(entry.target);
+      }
+    });
+  },{threshold:.15});
+  document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
+
+  /* --- показать страницу после загрузки --- */
+  window.addEventListener('load',()=>document.body.classList.add('visible'));
+
+  /* --- снег --- */
+  function createSnowflake(){
+    const snow=document.createElement('div');
+    snow.className='snowflake';
+    snow.textContent='❄';
+    snow.style.left=Math.random()*100+'vw';
+    snow.style.fontSize=12+Math.random()*16+'px';
+    snow.style.opacity=Math.random();
+    snow.style.animationDuration=5+Math.random()*5+'s';
+    document.body.appendChild(snow);
+    setTimeout(()=>snow.remove(),10000);
+  }
+  setInterval(createSnowflake,250);
+</script>
+
+</body>
+</html>
